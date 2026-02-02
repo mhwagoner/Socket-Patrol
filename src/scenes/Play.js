@@ -17,10 +17,10 @@ class Play extends Phaser.Scene {
         //add rocket (p1)
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0)
 
-        //add spaceships (x3)
-        this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0)
-        this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0)
-        this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0)
+        //add plugs (x3)
+        this.ship01 = new Plug(this, game.config.width + borderUISize*6, borderUISize*4, 'plug', 0, 30).setOrigin(0, 0)
+        this.ship02 = new Plug(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'plug', 0, 20).setOrigin(0,0)
+        this.ship03 = new Plug(this, game.config.width, borderUISize*6 + borderPadding*4, 'plug', 0, 10).setOrigin(0,0)
 
         //define keys
         keyFIRE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)

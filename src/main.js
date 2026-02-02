@@ -1,3 +1,11 @@
+/*
+name: Michael Wagoner
+mod: Socket Patrol
+time spent:
+mods made:
+citations:
+*/
+
 let config = {
     type: Phaser.AUTO,
     width: 640,
