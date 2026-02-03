@@ -61,7 +61,7 @@ class Menu extends Phaser.Scene {
                 plugSpeed: 3,
                 tweezersSpeed: 5,
                 gameTimer: 60,
-                timerIncrease: 3,
+                timerIncrease: 2,
                 timerDecrease: 5
             }
             this.sound.play('sfx-select')
@@ -73,7 +73,7 @@ class Menu extends Phaser.Scene {
                 plugSpeed: 4,
                 tweezersSpeed: 6,
                 gameTimer: 45,
-                timerIncrease: 2,
+                timerIncrease: 1,
                 timerDecrease: 6
             }
             this.sound.play('sfx-select')
