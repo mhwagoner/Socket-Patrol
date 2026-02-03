@@ -1,7 +1,7 @@
 /*
 name: Michael Wagoner
 mod: Socket Patrol
-time spent:
+time spent: 7 hours
 mods made:
     -Randomize each spaceship's movement direction at the start of each play (1)
     -Create a new scrolling tile sprite for the background (1)
