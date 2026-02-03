@@ -7,9 +7,10 @@ class Menu extends Phaser.Scene {
         //load images/tile sprites
         this.load.image('rocket', './assets/rocket.png')
         this.load.image('plug', './assets/plug.png')
+        this.load.image('tweezers', './assets/tweezers.png')
         this.load.image('starfield', './assets/starfield.png')
         //load spritesheet
-        this.load.spritesheet('explosion', './assets/explosion.png', {
+        this.load.spritesheet('spark', './assets/spark.png', {
             frameWidth: 64,
             frameHeight: 32,
             startFrame: 0,
@@ -24,8 +25,8 @@ class Menu extends Phaser.Scene {
     create() {
         //animation configuration
         this.anims.create({
-            key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}),
+            key: 'spark',
+            frames: this.anims.generateFrameNumbers('spark', { start: 0, end: 9, first: 0}),
             frameRate: 30
         })
 
@@ -57,7 +58,8 @@ class Menu extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyLEFT)){
             //easy mode
             game.settings = {
-                spaceshipSpeed: 3,
+                plugSpeed: 3,
+                tweezersSpeed: 5,
                 gameTimer: 60000
             }
             this.sound.play('sfx-select')
@@ -66,7 +68,8 @@ class Menu extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyRIGHT)){
             //hard mode
             game.settings = {
-                spaceshipSpeed: 4,
+                plugSpeed: 4,
+                tweezersSpeed: 6,
                 gameTimer: 45000
             }
             this.sound.play('sfx-select')

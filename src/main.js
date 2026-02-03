@@ -3,6 +3,8 @@ name: Michael Wagoner
 mod: Socket Patrol
 time spent:
 mods made:
+    -Randomize each spaceship's movement direction at the start of each play (1)
+    -Add a new spaceship type (tweezers) that is smaller, faster, and worth more points (5)
 citations:
 */
 

@@ -18,9 +18,12 @@ class Play extends Phaser.Scene {
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0)
 
         //add plugs (x3)
-        this.ship01 = new Plug(this, game.config.width + borderUISize*6, borderUISize*4, 'plug', 0, 30).setOrigin(0, 0)
-        this.ship02 = new Plug(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'plug', 0, 20).setOrigin(0,0)
-        this.ship03 = new Plug(this, game.config.width, borderUISize*6 + borderPadding*4, 'plug', 0, 10).setOrigin(0,0)
+        this.ship01 = new Plug(this, game.config.width + borderUISize*6, borderUISize*5, 'plug', 0, 30).setOrigin(0, 0)
+        this.ship02 = new Plug(this, game.config.width + borderUISize*3, borderUISize*6 + borderPadding*2, 'plug', 0, 20).setOrigin(0,0)
+        this.ship03 = new Plug(this, game.config.width, borderUISize*7 + borderPadding*4, 'plug', 0, 10).setOrigin(0,0)
+
+        //add tweezers
+        this.tweezers01 = new Tweezers(this, game.config.width + borderUISize*5, borderUISize*4, 'tweezers', 0, 50).setOrigin(0, 0)
 
         //define keys
         keyFIRE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
@@ -69,6 +72,7 @@ class Play extends Phaser.Scene {
             this.ship01.update()
             this.ship02.update()
             this.ship03.update()
+            this.tweezers01.update()
         }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene")
@@ -87,6 +91,14 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset()
             this.shipExplode(this.ship01)
         }
+        if (this.checkCollision(this.p1Rocket, this.tweezers01)) {
+            this.p1Rocket.reset()
+            this.shipExplode(this.tweezers01)
+        }
+    }
+
+    Timer() {
+        
     }
 
     checkCollision(rocket, ship){
@@ -98,12 +110,21 @@ class Play extends Phaser.Scene {
         }
     }
 
+    checkCollision(rocket, tweezers){
+        //simple AABB checking
+        if (rocket.x < tweezers.x + tweezers.width && rocket.x + rocket.width > tweezers.x && rocket.y < tweezers.y + tweezers.height && rocket.height + rocket.y > tweezers.y){
+            return true
+        } else {
+            return false
+        }
+    }
+
     shipExplode(ship){
         //temporarily hide ship
         ship.alpha = 0
         //create explosion sprite at ship's position
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
-        boom.anims.play('explode')
+        let boom = this.add.sprite(ship.x, ship.y, 'spark').setOrigin(0, 0);
+        boom.anims.play('spark')
         boom.on('animationcomplete', () => {
             ship.reset()
             ship.alpha = 1

@@ -1,5 +1,5 @@
-//Plug prefab
-class Plug extends Phaser.GameObjects.Sprite {
+//Tweezers prefab
+class Tweezers extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame, pointValue) {
         super(scene, x, y, texture, frame)
 
@@ -8,11 +8,11 @@ class Plug extends Phaser.GameObjects.Sprite {
         this.points = pointValue
 
         //random direction
-        if (Phaser.Math.Between(-1, 1) > 0) {
-            this.moveSpeed = game.settings.plugSpeed
+        if (Phaser.Math.Between(-1, 1) >= 0) {
+            this.moveSpeed = game.settings.tweezersSpeed
             this.flipX = false
         } else {
-            this.moveSpeed = game.settings.plugSpeed * -1
+            this.moveSpeed = game.settings.tweezersSpeed * -1
             this.x = this.x - game.config.width - borderUISize*6
             this.flipX = true
         }
