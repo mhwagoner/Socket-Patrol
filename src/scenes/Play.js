@@ -31,11 +31,12 @@ class Play extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
 
-        //initialize score
+        //initialize score and timer
         this.p1Score = 0
+        this.timer = game.settings.gameTimer
 
         // display score
-        let scoreConfig = {
+        this.scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#F3B141',
@@ -47,18 +48,15 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig)
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, this.scoreConfig)
 
         //Game over flag
         this.gameOver = false
 
-        //60-second play clock
-        scoreConfig.fixedWidth = 0
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5)
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(0.5)
-            this.gameOver = true
-        }, null, this)
+        //timer UI
+        this.timerUI = this.add.text(game.config.width - borderUISize - borderPadding - this.scoreConfig.fixedWidth, borderUISize + borderPadding*2, this.timer, this.scoreConfig)
+
+        this.scoreConfig.fixedWidth = 0
     }
 
     update() {
@@ -66,6 +64,14 @@ class Play extends Phaser.Scene {
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyRESET)){
             this.scene.restart()
         }
+
+        if(this.timer <= 0){
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', this.scoreConfig).setOrigin(0.5)
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or <- for Menu', this.scoreConfig).setOrigin(0.5)
+            this.gameOver = true
+        }
+
+
         this.starfield.tilePositionX -= 4
         if(!this.gameOver){
             this.p1Rocket.update()
@@ -73,6 +79,8 @@ class Play extends Phaser.Scene {
             this.ship02.update()
             this.ship03.update()
             this.tweezers01.update()
+            this.timer -= this.game.loop.delta / 1000 // approximately 1/60th of a second (assuming 60fps)
+            this.timerUI.text = this.timer
         }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene")
@@ -95,10 +103,12 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset()
             this.shipExplode(this.tweezers01)
         }
-    }
 
-    Timer() {
-        
+        //Player misses
+        if (this.p1Rocket.y < borderUISize * 3 + borderPadding + 1) {
+            this.timer -= game.settings.timerDecrease //decrease timer on miss
+            this.p1Rocket.reset()
+        }
     }
 
     checkCollision(rocket, ship){
@@ -133,6 +143,7 @@ class Play extends Phaser.Scene {
         //score add and text update
         this.p1Score += ship.points
         this.scoreLeft.text = this.p1Score
+        this.timer += game.settings.timerIncrease //increase timer on hit
 
         //sfx
         this.sound.play('sfx-explosion')
